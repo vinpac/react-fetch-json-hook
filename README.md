@@ -19,7 +19,7 @@ Or if using [yarn](https://yarnpkg.com/en/)
 import React from 'react'
 import { render } from 'react-dom'
 
-import { createFetchConnector } from 'react-fetch-json-hook'
+import { createFetchConnector, FetchHookProvider } from 'react-fetch-json-hook'
 
 const connector = createFetchConnector()
 
