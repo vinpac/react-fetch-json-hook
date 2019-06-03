@@ -73,7 +73,11 @@ const connector = createFetchConnector({
 
 ```javascript
 import express from 'express'
-import { createFetchConnector, createFetchSSRManager } from 'react-apollo-hooks'
+import {
+  createFetchConnector,
+  createFetchSSRManager,
+  FetchHookProvider,
+} from 'react-fetch-json-hook'
 import { renderToString } from 'react-dom/server'
 
 const Hello = () => {
