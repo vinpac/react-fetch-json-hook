@@ -1,0 +1,21 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-prettier",
+    "tslint-react-hooks"
+  ],
+  "rules": {
+    // We handle this manually
+    "interface-name": [true, "never-prefix"],
+    // These rules are super annoying in this project
+    "object-literal-sort-keys": false,
+    "jsx-no-lambda": [false],
+    "no-console": [true, "log"],
+    "no-relative-imports": ["never"]
+  },
+  "rulesDirectory": [],
+  "linterOptions": {
+    "exclude": ["node_modules/**/*"]
+  }
+}
