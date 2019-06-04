@@ -322,5 +322,12 @@ describe('UseFetchHook', () => {
     expect(hook1.result.current.data).toEqual(mockedResponse['/foo'])
     expect(hook1.result.current.error).toEqual(undefined)
     expect(hook1.result.current.loading).toEqual(false)
+
+    expect(connector.cache.state).toEqual({
+      'GET:/foo': {
+        payload: mockedResponse['/foo'],
+      },
+    })
+    expect(connector.cache.stack).toEqual(['GET:/foo'])
   })
 })
