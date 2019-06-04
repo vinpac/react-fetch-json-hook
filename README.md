@@ -98,7 +98,7 @@ app.get('/', async (req, res) => {
     ),
   })
 
-  // const initialStateForHydratation = connector.cache.state
+  // const initialStateForHydratation = connector.cache
   res.send(renderedHtml)
 })
 ```
