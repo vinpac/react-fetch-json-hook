@@ -304,4 +304,23 @@ describe('UseFetchHook', () => {
       'GET:/kit': { payload: mockedResponse['/kit'] },
     })
   })
+
+  test('should not fetch if valid initial state is provided', async () => {
+    const connector = createFetchConnector({
+      initialState: {
+        state: {
+          'GET:/foo': {
+            payload: mockedResponse['/foo'],
+          },
+        },
+        stack: ['GET:/foo'],
+      },
+    })
+    const hook1 = renderHook(() => useFetch('/foo'), {
+      wrapper: createWrapperComponent(connector),
+    })
+    expect(hook1.result.current.data).toEqual(mockedResponse['/foo'])
+    expect(hook1.result.current.error).toEqual(undefined)
+    expect(hook1.result.current.loading).toEqual(false)
+  })
 })
