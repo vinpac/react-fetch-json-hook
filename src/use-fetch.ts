@@ -5,12 +5,9 @@ import {
   registerItemToFetchConnector,
   uncacheQueries,
 } from './fetch-connector'
-import actHack from './internal/actHack'
+import fetchConnectorContext from './FetchConnectorContext'
 import { FetchSSRManagerContext } from './get-markup-from-tree'
-
-export const FetchConnectorContext = React.createContext<FetchConnector | null>(
-  null,
-)
+import actHack from './internal/actHack'
 
 export interface FetchMorePlan<Payload, NextPayload> extends RequestInit {
   uri: string
@@ -85,7 +82,7 @@ export default function useFetch<Payload>(
   options?: UseFetchOptions,
 ): FetchHookResult<Payload> {
   const { stackSize = 3 } = options || {}
-  const fetchConnector = useContext(FetchConnectorContext)
+  const fetchConnector = useContext(fetchConnectorContext)
   const ssrManager = useContext(FetchSSRManagerContext)
   const queryId = useMemo(() => createQueryCacheId(uri, options), [
     uri,

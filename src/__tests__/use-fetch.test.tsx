@@ -3,7 +3,8 @@ import { renderHook } from 'react-hooks-testing-library'
 import mockedResponse from '../__mocks__/mocked-response.json'
 import { createFetchConnector, FetchConnector } from '../fetch-connector'
 import fetchJSON from '../fetch-json'
-import useFetch, { FetchConnectorContext } from '../use-fetch'
+import FetchConnectorContext from '../FetchConnectorContext'
+import useFetch from '../use-fetch'
 
 jest.mock('../internal/actHack')
 jest.mock('../fetch-json')

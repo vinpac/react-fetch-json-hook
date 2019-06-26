@@ -1,6 +1,6 @@
 import React from 'react'
 import { FetchConnector } from './fetch-connector'
-import { FetchConnectorContext } from './use-fetch'
+import FetchConnectorContext from './FetchConnectorContext'
 
 interface FetchHookProviderProps {
   readonly connector: FetchConnector

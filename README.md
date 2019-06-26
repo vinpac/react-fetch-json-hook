@@ -57,6 +57,31 @@ const Dogs = () => {
 }
 ```
 
+## useTriggerableFetch
+
+```javascript
+import { useTriggerableFetch } from 'react-fetch-json-hook'
+
+const Dogs = () => {
+  const { trigger, error, loading } = useTriggerableFetch('/api/dogs')
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
+  if (error) {
+    return <div>Error! {error.message}</div>
+  }
+
+  return (
+    <ul>
+      <button onClick={trigger}>Fetch Dogs</button>
+      {data && data.dogs.map(dog => <li key={dog.id}>{dog.breed}</li>)}
+    </ul>
+  )
+}
+```
+
 ## Authorization
 
 ```javascript

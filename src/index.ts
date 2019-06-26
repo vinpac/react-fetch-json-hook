@@ -1,5 +1,7 @@
 export { default as useFetch } from './use-fetch'
 export { default as FetchHookProvider } from './FetchHookProvider'
+export { default as FetchConnectorContext } from './FetchConnectorContext'
+export { default as useTriggerableFetch } from './use-triggerable-fetch'
 export { default as getMarkupFromTree } from './get-markup-from-tree'
 export * from './fetch-connector'
 export * from './internal/ssr-context'
