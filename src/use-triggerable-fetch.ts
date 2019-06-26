@@ -25,10 +25,10 @@ export default function useTriggerableFetch<Payload>(
     loading: false,
   })
   const trigger = useCallback(
-    async (body?: any, options?: RequestInit) => {
+    (body?: any, options?: RequestInit) => {
       actHack(() => setState({ loading: true }))
       try {
-        const data: Payload = await fetchJSON(url, {
+        return fetchJSON<Payload>(url, {
           ...defaultOptions,
           ...options,
           headers: {
@@ -37,10 +37,10 @@ export default function useTriggerableFetch<Payload>(
             ...(options && options.headers),
           },
           body,
+        }).then(data => {
+          actHack(() => setState({ data, loading: false }))
+          return data
         })
-        actHack(() => setState({ data, loading: false }))
-
-        return data
       } catch (error) {
         actHack(() => setState({ error, loading: false }))
         return error
