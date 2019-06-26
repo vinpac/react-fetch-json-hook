@@ -9,7 +9,10 @@ interface MutationFetchHookState<Payload> {
   error?: Error
 }
 
-export default function useTriggerableFetch<Payload>(url: string) {
+export default function useTriggerableFetch<Payload>(
+  url: string,
+  defaultOptions?: RequestInit,
+) {
   const fetchConnector = useContext(FetchConnectorContext)
 
   if (!fetchConnector) {
@@ -26,9 +29,11 @@ export default function useTriggerableFetch<Payload>(url: string) {
       actHack(() => setState({ loading: true }))
       try {
         const data: Payload = await fetchJSON(url, {
+          ...defaultOptions,
           ...options,
           headers: {
             ...fetchConnector.requestHeaders,
+            ...(defaultOptions && defaultOptions.headers),
             ...(options && options.headers),
           },
           body,
