@@ -1,7 +1,5 @@
 module.exports = {
   presets: [
-    '@babel/preset-react',
-    '@babel/preset-typescript',
     [
       '@babel/preset-env',
       {
@@ -10,5 +8,8 @@ module.exports = {
         targets: process.env.NODE_ENV !== 'test' ? undefined : { node: true },
       },
     ],
+    '@babel/preset-react',
+    '@babel/preset-typescript',
   ],
+  plugins: ['@babel/plugin-proposal-optional-chaining'],
 }

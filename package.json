@@ -1,6 +1,6 @@
 {
   "name": "react-fetch-json-hook",
-  "version": "0.1.7",
+  "version": "0.2.0-rc10",
   "main": "lib/index.js",
   "module": "es/index.js",
   "typings": "lib/index.d.ts",
@@ -15,7 +15,8 @@
   "license": "MIT",
   "homepage": "https://github.com/vinpac/react-fetch-json-hook#readme",
   "dependencies": {
-    "isomorphic-fetch": "^2.2.1"
+    "isomorphic-unfetch": "^3.0.0",
+    "mitt": "^1.2.0"
   },
   "repository": {
     "type": "git",
@@ -29,37 +30,41 @@
     "build": "npm run build:cjs && npm run build:es && npm run build:typings",
     "format-check": "prettier --list-different \"**/*.{js,ts,tsx}\"",
     "format": "prettier --write \"**/*.{js,ts,tsx}\"",
-    "lint": "tslint --project . \"src/**/*.{ts,tsx}\"",
+    "lint": "eslint . \"{src,test}/**/*.{ts,tsx}\"",
     "typings-check": "tsc --noEmit",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/preset-typescript": "^7.3.3",
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-proposal-optional-chaining": "^7.7.5",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
+    "@babel/preset-typescript": "^7.7.7",
     "@testing-library/react": "^8.0.1",
-    "@types/isomorphic-fetch": "^0.0.35",
-    "@types/jest": "24.0.13",
+    "@testing-library/react-hooks": "^3.2.1",
+    "@types/jest": "^24.0.24",
     "@types/node": "12.0.4",
     "@types/react": "16.8.19",
     "@types/react-dom": "16.8.4",
+    "@typescript-eslint/eslint-plugin": "^2.13.0",
+    "@typescript-eslint/parser": "^2.13.0",
+    "babel-jest": "^24.9.0",
     "cross-env": "^5.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-no-for-of-loops": "^1.0.1",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
     "husky": "^2.3.0",
-    "jest": "^24.8.0",
+    "jest": "^24.9.0",
     "lint-staged": "^8.1.7",
-    "prettier": "^1.17.1",
-    "react": "^16.8.6",
+    "prettier": "^1.19.1",
+    "react": "^16.12.0",
     "react-app-polyfill": "^1.0.1",
-    "react-dom": "^16.8.6",
-    "react-hooks-testing-library": "^0.5.0",
-    "react-test-renderer": "^16.8.6",
-    "tslint": "^5.17.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-react": "^4.0.0",
-    "tslint-react-hooks": "^2.1.0",
-    "typescript": "3.5.1"
+    "react-dom": "^16.12.0",
+    "react-test-renderer": "^16.12.0",
+    "typescript": "^3.7.4"
   },
   "husky": {
     "hooks": {
@@ -72,35 +77,9 @@
       "git add"
     ],
     "**/*.{ts,tsx}": [
-      "tslint --fix --project .",
+      "eslint --fix",
       "prettier --write",
       "git add"
-    ]
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-    ],
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest"
-    },
-    "modulePaths": [],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json",
-      "jsx",
-      "node"
     ]
   }
 }
