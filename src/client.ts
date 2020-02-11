@@ -2,7 +2,6 @@ import { FetchCache, createCache, LocalCacheState } from './cache'
 import { FetchAction } from './action'
 import mitt from 'mitt'
 import fetch from 'isomorphic-unfetch'
-import { registerClientForLocalMutations } from './mutate-browser-cache'
 
 export interface FetchDispatcher<
   TResult extends FetchDispatcherResult<any, any>
@@ -188,12 +187,12 @@ export class FetchClient<
   ): void {
     let newValue: any = newValueOrUpdateResultFn
     if (typeof newValueOrUpdateResultFn === 'function') {
-      const prevValue = this.cache.get(fetchId)
-      newValue = (newValueOrUpdateResultFn as Function)(prevValue)
+      const prevCacheItem = this.cache.get(fetchId)
+      newValue = (newValueOrUpdateResultFn as Function)(prevCacheItem?.value)
     }
 
     this.cache.set(fetchId, newValue)
-    this.emitter.emit('update', { fetchId, data: newValueOrUpdateResultFn })
+    this.emitter.emit('update', { fetchId, data: newValue })
   }
 
   get queue() {
@@ -221,10 +220,6 @@ export const createClient = ({
     cache || createCache({ initialState: initialCacheState }),
     dispatcher,
   )
-
-  if (typeof window !== 'undefined') {
-    registerClientForLocalMutations(client)
-  }
 
   return client
 }

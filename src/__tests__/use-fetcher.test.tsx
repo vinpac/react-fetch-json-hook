@@ -1,5 +1,5 @@
 import baseFetch from 'isomorphic-unfetch'
-import { useFetchMutation } from '../use-fetch-mutation'
+import { useFetcher } from '../use-fetcher'
 import { renderFetchHook } from '../../test/utils/react-utils'
 import {
   OKFetchImplementation,
@@ -16,8 +16,8 @@ const fetch = (baseFetch as any) as jest.Mock<ReturnType<typeof baseFetch>>
 
 describe('Hooks', () => {
   beforeEach(() => fetch.mockReset())
-  describe('useFetchMutation', () => {
-    test('send request when mutate method is called', async () => {
+  describe('useFetcher', () => {
+    test('send request when fetch method is called', async () => {
       fetch.mockImplementation(OKFetchImplementation)
       const client = createClient({})
       const action = {
@@ -25,19 +25,19 @@ describe('Hooks', () => {
         method: 'POST',
       }
       const { result, waitForNextUpdate } = renderFetchHook(
-        () => useFetchMutation(() => action),
+        () => useFetcher(() => action),
         { client },
       )
 
       expect(result.current.data).toEqual(undefined)
-      expect(typeof result.current.mutate).toEqual('function')
+      expect(typeof result.current.fetch).toEqual('function')
       expect(result.current.loading).toEqual(false)
       expect(result.current.action).toEqual(undefined)
       expect(result.current.status).toEqual(undefined)
-      result.current.mutate()
+      result.current.fetch()
       expect(result.current.error).toEqual(undefined)
       expect(result.current.data).toEqual(undefined)
-      expect(typeof result.current.mutate).toEqual('function')
+      expect(typeof result.current.fetch).toEqual('function')
       expect(result.current.loading).toEqual(true)
       expect(result.current.action).toEqual({
         url: '/foo',
@@ -53,7 +53,7 @@ describe('Hooks', () => {
         url: '/foo',
         method: 'POST',
       })
-      expect(typeof result.current.mutate).toEqual('function')
+      expect(typeof result.current.fetch).toEqual('function')
       expect(result.current.loading).toEqual(false)
       expect(fetch.mock.calls.length).toBe(1)
     })
@@ -63,13 +63,13 @@ describe('Hooks', () => {
       const client = createClient({})
       const { result, waitForNextUpdate } = renderFetchHook(
         () =>
-          useFetchMutation(() => ({
+          useFetcher(() => ({
             url: '/foo',
             method: 'POST',
           })),
         { client },
       )
-      result.current.mutate()
+      result.current.fetch()
       await waitForNextUpdate()
       expect(client.cache.getState()).toEqual({})
     })
@@ -85,10 +85,10 @@ describe('Hooks', () => {
         },
       }
       const { result, waitForNextUpdate } = renderFetchHook(
-        () => useFetchMutation(() => action),
+        () => useFetcher(() => action),
         { client },
       )
-      result.current.mutate()
+      result.current.fetch()
       expect(result.current.action).toEqual(action)
       await waitForNextUpdate()
       expect(result.current.action).toEqual(action)
@@ -99,7 +99,7 @@ describe('Hooks', () => {
       const client = createClient({})
       const { result } = renderFetchHook(
         () =>
-          useFetchMutation(() => ({
+          useFetcher(() => ({
             url: '/foo',
             method: 'POST',
             meta: {
@@ -108,7 +108,7 @@ describe('Hooks', () => {
           })),
         { client },
       )
-      await result.current.mutate()
+      await result.current.fetch()
       expect(result.current.status).toEqual(400)
       expect(result.current.headers).toEqual({})
       expect(result.current.data).toEqual({ error: 'Bad request' })
@@ -119,7 +119,7 @@ describe('Hooks', () => {
       const client = createClient({})
       const { result } = renderFetchHook(
         () =>
-          useFetchMutation(() => ({
+          useFetcher(() => ({
             url: '/foo',
             method: 'POST',
             meta: {
@@ -128,18 +128,18 @@ describe('Hooks', () => {
           })),
         { client },
       )
-      await result.current.mutate()
+      await result.current.fetch()
       expect(result.current.status).toEqual(200)
       expect(result.current.headers).toEqual({ 'x-test-success': true })
       expect(result.current.data).toEqual({ foo: 'bar' })
     })
 
-    test('throw error on mutate method', async () => {
+    test('throw error on fetch method', async () => {
       fetch.mockImplementation(ErrorRequestFetchImplementation)
       const client = createClient({})
       const { result } = renderFetchHook(
         () =>
-          useFetchMutation(() => ({
+          useFetcher(() => ({
             url: '/foo',
             method: 'POST',
             meta: {
@@ -149,7 +149,7 @@ describe('Hooks', () => {
         { client },
       )
       try {
-        await result.current.mutate()
+        await result.current.fetch()
       } catch (error) {
         expect(error.message).toEqual('Failed to fetch /foo')
       }
@@ -160,12 +160,12 @@ describe('Hooks', () => {
       expect(result.current.error?.message).toBe('Failed to fetch /foo')
     })
 
-    test('throw error at parsing json on mutate method', async () => {
+    test('throw error at parsing json on fetch method', async () => {
       fetch.mockImplementation(ErrorAtParsingJSONRequestFetchImplementation)
       const client = createClient({})
       const { result } = renderFetchHook(
         () =>
-          useFetchMutation(() => ({
+          useFetcher(() => ({
             url: '/foo',
             method: 'POST',
             meta: {
@@ -175,7 +175,7 @@ describe('Hooks', () => {
         { client },
       )
       try {
-        await result.current.mutate()
+        await result.current.fetch()
       } catch (error) {
         expect(error.message).toEqual('Error parsing json')
       }

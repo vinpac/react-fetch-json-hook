@@ -1,6 +1,6 @@
-const IS_SERVER = typeof window === 'undefined'
 import { FetchClient } from './client'
 
+const IS_SERVER = typeof window === 'undefined'
 let client: FetchClient<any> | undefined
 export function registerClientForLocalMutations(fetchClient: FetchClient<any>) {
   if (IS_SERVER) {
@@ -12,7 +12,11 @@ export function registerClientForLocalMutations(fetchClient: FetchClient<any>) {
   client = fetchClient
 }
 
-export function mutate<TValue>(
+export function removeRegisteredClientForLocalMutations() {
+  client = undefined
+}
+
+export function mutateFetchCache<TValue>(
   fetchId: string,
   overrideOrUpdateValue: ((newValue: TValue) => TValue) | TValue,
 ) {

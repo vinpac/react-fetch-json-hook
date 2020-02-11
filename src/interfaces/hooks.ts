@@ -6,7 +6,7 @@ export interface FetchHookConfig<TMeta> extends FetchAction<TMeta> {
   ssr?: boolean
 }
 
-export interface FetchHookResult<TData, TMeta> {
+export interface BaseFetchHookResult<TMeta> {
   error?: Error
   loading: boolean
   action?: FetchAction<TMeta>

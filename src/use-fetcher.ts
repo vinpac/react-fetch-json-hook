@@ -2,35 +2,32 @@ import { useCallback, useMemo, useState } from 'react'
 import { FetchActionCreator } from './action'
 import { actHack } from './act-hack'
 import { useFetchClient } from './use-fetch-client'
-import { FetchHookResult, FetchHookState } from './interfaces/hooks'
+import { BaseFetchHookResult, FetchHookState } from './interfaces/hooks'
 import { FetchDispatcherResult, DefaultFetchDispatcherResult } from './client'
 
-export interface UseBaseFetchMutationResultWithNoExtraValues<
-  TValue,
-  TArg,
-  TMeta
-> extends FetchHookResult<TValue, TMeta> {
-  mutate: (arg?: TArg) => Promise<TValue>
+export interface UseBaseFetcherResultWithNoExtraValues<TValue, TArg, TMeta>
+  extends BaseFetchHookResult<TMeta> {
+  fetch: (arg?: TArg) => Promise<TValue>
   reset: () => void
   loading: boolean
 }
 
-export type UseBaseFetchMutationResult<TValue, TArg, TMeta> = TValue &
-  UseBaseFetchMutationResultWithNoExtraValues<TValue, TArg, TMeta>
+export type UseBaseFetcherResult<TValue, TArg, TMeta> = TValue &
+  UseBaseFetcherResultWithNoExtraValues<TValue, TArg, TMeta>
 
-export function useBaseFetchMutation<
+export function useBaseFetcher<
   TDispatcherResult extends FetchDispatcherResult<any, any>,
   TArg = any,
   TMeta = any
 >(
   actionCreator: FetchActionCreator<TArg, TMeta>,
-): UseBaseFetchMutationResult<TDispatcherResult, TArg, TMeta> {
+): UseBaseFetcherResult<TDispatcherResult, TArg, TMeta> {
   const client = useFetchClient<TDispatcherResult>()
   const [state, setState] = useState<FetchHookState<TDispatcherResult, TMeta>>({
     loading: false,
   })
 
-  const mutate = useCallback(
+  const callback = useCallback(
     (arg?: TArg) => {
       try {
         const action = actionCreator(arg)
@@ -71,31 +68,25 @@ export function useBaseFetchMutation<
   )
 
   const reset = useCallback(() => setState({ loading: false }), [setState])
-  const result = useMemo<
-    UseBaseFetchMutationResult<TDispatcherResult, TArg, TMeta>
-  >(
+  const result = useMemo<UseBaseFetcherResult<TDispatcherResult, TArg, TMeta>>(
     () =>
       ({
         ...state.value,
         action: state.action,
         loading: state.loading,
-        mutate,
+        fetch: callback,
         reset,
-      } as UseBaseFetchMutationResult<TDispatcherResult, TArg, TMeta>),
-    [state, mutate],
+      } as UseBaseFetcherResult<TDispatcherResult, TArg, TMeta>),
+    [state, callback],
   )
 
   return result
 }
 
-export interface UseFetchMutation {
+export interface UseFetcher {
   <TData, TArg = any, TMeta = any>(
     actionCreator: FetchActionCreator<TArg, TMeta>,
-  ): UseBaseFetchMutationResult<
-    DefaultFetchDispatcherResult<TData>,
-    TArg,
-    TMeta
-  >
+  ): UseBaseFetcherResult<DefaultFetchDispatcherResult<TData>, TArg, TMeta>
 }
 
-export const useFetchMutation: UseFetchMutation = useBaseFetchMutation
+export const useFetcher: UseFetcher = useBaseFetcher

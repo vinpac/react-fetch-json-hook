@@ -3,13 +3,13 @@ import { actHack } from './act-hack'
 import { useFetchClient } from './use-fetch-client'
 import {
   FetchHookConfig,
-  FetchHookResult,
+  BaseFetchHookResult,
   FetchHookState,
 } from './interfaces/hooks'
 import { FetchDispatcherResult, DefaultFetchDispatcherResult } from './client'
 
 interface UseBaseFetchResultWithoutExtraValues<TValue, TMeta>
-  extends FetchHookResult<TValue, TMeta> {
+  extends BaseFetchHookResult<TMeta> {
   refetch: () => Promise<TValue>
 }
 

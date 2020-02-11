@@ -4,6 +4,7 @@ import {
   MultipleOKFetchImplementation,
 } from '../../test/utils/fetch-mocks'
 import { createClient } from '../client'
+import { FetchResult } from '..'
 
 jest.mock('../src/act-hack')
 jest.mock('isomorphic-unfetch', () => jest.fn())
@@ -90,6 +91,55 @@ describe('Fetch Client', () => {
           status: 200,
         },
         cachedAt: expect.any(Number),
+      },
+    })
+  })
+
+  test('reuse a promise when dispatching', async () => {
+    fetch.mockImplementation(OKFetchImplementation)
+    const client = createClient({})
+    const action = {
+      method: 'GET',
+      url: '/foo',
+    }
+    const r = Array(8).fill(0)
+    const update = jest.fn()
+    r.map(() =>
+      client.listen(client.idFromAction(action), {
+        update,
+      }),
+    )
+    const promise = Promise.all(r.map(() => client.dispatch(action)))
+    expect(client.queue.length).toBe(1)
+    await promise
+    expect(update).toBeCalledTimes(8)
+  })
+
+  test('update cache', async () => {
+    fetch.mockImplementation(MultipleOKFetchImplementation(['/foo']))
+    const client = createClient({})
+    await client.dispatch(
+      {
+        method: 'GET',
+        url: '/foo',
+      },
+      'foo',
+    )
+    const expectedPrevValue = client.get('foo')
+    client.set('foo', (prevValue: FetchResult<{ foo: 'bar' }>) => {
+      expect(prevValue).toEqual(expectedPrevValue)
+      return {
+        ...prevValue,
+        data: {
+          ...prevValue.data,
+          bar: 'foo',
+        },
+      }
+    })
+    expect(client.get('foo')).toMatchObject({
+      data: {
+        foo: 'bar',
+        bar: 'foo',
       },
     })
   })
