@@ -1,4 +1,4 @@
-import { FetchDispatcherResult, HeadersObject } from './client'
+import { FetchResult, HeadersObject } from './client'
 
 export interface FetchCache<TValue, TState> {
   set(id: string, value: TValue): CacheItem<TValue>
@@ -19,7 +19,7 @@ export interface LocalCacheState {
 }
 
 export class FetchLocalCache
-  implements FetchCache<FetchDispatcherResult<any, HeadersObject>, any> {
+  implements FetchCache<FetchResult<any, HeadersObject>, any> {
   constructor(protected state: LocalCacheState) {}
 
   set<TValue>(id: string, value: TValue): CacheItem<TValue> {

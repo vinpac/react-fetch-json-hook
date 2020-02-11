@@ -3,13 +3,11 @@ import { FetchAction } from './action'
 import mitt from 'mitt'
 import fetch from 'isomorphic-unfetch'
 
-export interface FetchDispatcher<
-  TResult extends FetchDispatcherResult<any, any>
-> {
+export interface FetchDispatcher<TResult extends FetchResult<any, any>> {
   (action: FetchAction<any>): Promise<TResult>
 }
 
-export type FetchDispatcherResult<TData, TContext = {}> = {
+export type FetchResult<TData, TContext = {}> = {
   error?: Error
   data?: TData
 } & TContext
@@ -18,7 +16,7 @@ export interface HeadersObject {
   [headerName: string]: any
 }
 
-export type DefaultFetchDispatcherResult<TData> = FetchDispatcherResult<
+export type DefaultFetchDispatcherResult<TData> = FetchResult<
   TData,
   {
     status?: number
@@ -65,9 +63,7 @@ interface EventHandlersMap {
   revalidate?: () => void
 }
 
-export class FetchClient<
-  TDispatcherResult extends FetchDispatcherResult<any, any>
-> {
+export class FetchClient<TDispatcherResult extends FetchResult<any, any>> {
   /**
    * A function that creates an id from an action
    *
@@ -207,7 +203,7 @@ export class FetchClient<
   }
 }
 interface CreateClientConfig {
-  cache?: FetchCache<FetchDispatcherResult<any, any>, any>
+  cache?: FetchCache<FetchResult<any, any>, any>
   initialCacheState?: LocalCacheState
   dispatcher?: FetchDispatcher<any>
 }

@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useCallback, useState } from 'react'
 import { useFetchClient } from './use-fetch-client'
 import { actHack } from './act-hack'
-import { FetchDispatcherResult, DefaultFetchDispatcherResult } from './client'
+import { FetchResult, DefaultFetchDispatcherResult } from './client'
 
 export interface MutateCachedValueFn<
-  TDispatcherResult extends FetchDispatcherResult<any, any>
+  TDispatcherResult extends FetchResult<any, any>
 > {
   (newValue: Partial<TDispatcherResult>): void
 }
 export function useBaseFetchCache<
-  TDispatcherResult extends FetchDispatcherResult<any, any>
+  TDispatcherResult extends FetchResult<any, any>
 >(fetchId: string) {
   const client = useFetchClient<TDispatcherResult>()
 

@@ -2,13 +2,7 @@ export * from './use-fetch'
 export * from './use-fetcher'
 export * from './context'
 export * from './context-provider'
-export {
-  createClient,
-  FetchClient,
-  FetchDispatcher,
-  defaultDispatcher,
-  FetchDispatcherResult as FetchResult,
-} from './client'
+export * from './client'
 export {
   mutateFetchCache,
   registerClientForLocalMutations,

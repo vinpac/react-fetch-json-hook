@@ -1,8 +1,8 @@
 import React from 'react'
-import { FetchClient, FetchDispatcherResult } from './client'
+import { FetchClient, FetchResult } from './client'
 
 export type FetchContextValue<
-  TDispatcherResult extends FetchDispatcherResult<any, any>
+  TDispatcherResult extends FetchResult<any, any>
 > = FetchClient<TDispatcherResult>
 export const FetchContext = React.createContext<FetchContextValue<any> | null>(
   null,

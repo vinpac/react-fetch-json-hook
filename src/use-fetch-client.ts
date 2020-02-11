@@ -1,9 +1,9 @@
 import { useContext } from 'react'
 import { FetchContext, FetchContextValue } from './context'
-import { FetchDispatcherResult } from './client'
+import { FetchResult } from './client'
 
 export function useFetchClient<
-  TDispatcherResult extends FetchDispatcherResult<any, any>
+  TDispatcherResult extends FetchResult<any, any>
 >() {
   const client: FetchContextValue<TDispatcherResult> | null = useContext(
     FetchContext,

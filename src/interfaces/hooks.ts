@@ -1,5 +1,5 @@
 import { FetchAction } from '../action'
-import { FetchDispatcherResult } from '../client'
+import { FetchResult } from '../client'
 
 export interface FetchHookConfig<TMeta> extends FetchAction<TMeta> {
   id?: string
@@ -13,7 +13,7 @@ export interface BaseFetchHookResult<TMeta> {
 }
 
 export interface FetchHookState<TValue, TMeta> {
-  value?: FetchDispatcherResult<TValue>
+  value?: FetchResult<TValue>
   action?: FetchAction<TMeta>
   loading: boolean
 }

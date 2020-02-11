@@ -1,4 +1,4 @@
-import { FetchClient } from './client'
+import { FetchClient, FetchResult } from './client'
 
 const IS_SERVER = typeof window === 'undefined'
 let client: FetchClient<any> | undefined
@@ -18,7 +18,9 @@ export function removeRegisteredClientForLocalMutations() {
 
 export function mutateFetchCache<TValue>(
   fetchId: string,
-  overrideOrUpdateValue: ((newValue: TValue) => TValue) | TValue,
+  overrideOrUpdateValue:
+    | ((newValue: FetchResult<TValue>) => TValue)
+    | FetchResult<TValue>,
 ) {
   if (!client) {
     throw new Error('Fetch client was not registered for local mutations')

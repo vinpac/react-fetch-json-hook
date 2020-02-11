@@ -11,7 +11,7 @@ jest.mock('../src/act-hack')
 jest.mock('isomorphic-unfetch', () => jest.fn())
 const fetch = (baseFetch as any) as jest.Mock<ReturnType<typeof baseFetch>>
 
-describe('Cache', () => {
+describe('Mutate local fetch cache', () => {
   beforeEach(() => fetch.mockReset())
   beforeEach(() => removeRegisteredClientForLocalMutations())
 

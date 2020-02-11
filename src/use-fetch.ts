@@ -6,7 +6,7 @@ import {
   BaseFetchHookResult,
   FetchHookState,
 } from './interfaces/hooks'
-import { FetchDispatcherResult, DefaultFetchDispatcherResult } from './client'
+import { FetchResult, DefaultFetchDispatcherResult } from './client'
 
 interface UseBaseFetchResultWithoutExtraValues<TValue, TMeta>
   extends BaseFetchHookResult<TMeta> {
@@ -20,7 +20,7 @@ interface State<TValue, TMeta> extends FetchHookState<TValue, TMeta> {
   lastFetchedFetchId?: string
 }
 export function useBaseFetch<
-  TDispatcherResult extends FetchDispatcherResult<any, any>,
+  TDispatcherResult extends FetchResult<any, any>,
   TMeta = any
 >(
   config: FetchHookConfig<TMeta> | null,

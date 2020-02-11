@@ -3,7 +3,7 @@ import { FetchActionCreator } from './action'
 import { actHack } from './act-hack'
 import { useFetchClient } from './use-fetch-client'
 import { BaseFetchHookResult, FetchHookState } from './interfaces/hooks'
-import { FetchDispatcherResult, DefaultFetchDispatcherResult } from './client'
+import { FetchResult, DefaultFetchDispatcherResult } from './client'
 
 export interface UseBaseFetcherResultWithNoExtraValues<TValue, TArg, TMeta>
   extends BaseFetchHookResult<TMeta> {
@@ -16,7 +16,7 @@ export type UseBaseFetcherResult<TValue, TArg, TMeta> = TValue &
   UseBaseFetcherResultWithNoExtraValues<TValue, TArg, TMeta>
 
 export function useBaseFetcher<
-  TDispatcherResult extends FetchDispatcherResult<any, any>,
+  TDispatcherResult extends FetchResult<any, any>,
   TArg = any,
   TMeta = any
 >(
